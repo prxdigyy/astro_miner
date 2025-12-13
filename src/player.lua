@@ -47,6 +47,8 @@ function Player.new(x, y)
     self.state = "idle"
     self.facingRight = true
     self.scale = SCALE
+    -- draw offset (positive moves sprite down relative to collision box)
+    self.drawOffset = 0
     -- timing to debounce rapid state changes (prevents animation flicker)
     self._stateTimer = 0
     self._stateDebounce = 0.06 -- seconds required before committing a new state
@@ -65,6 +67,10 @@ end
 
 function Player:setLevelGravity(g)
     self.gravity = g
+end
+
+function Player:setDrawOffset(offset)
+    self.drawOffset = offset or 0
 end
 
 function Player:update(dt, groundY)

@@ -26,6 +26,8 @@ function loadLevel(index)
     levelConfig = Level.get(index)
     background = love.graphics.newImage(levelConfig.bg)
     player = Player.new(80, levelConfig.groundY - 128)
+    -- lower the visual sprite a few pixels so feet align with the ground
+    player:setDrawOffset(8)
     player:setLevelGravity(levelConfig.gravity)
 
     -- crystals
@@ -113,12 +115,15 @@ function drawHUD()
 end
 
 function love.draw()
-    -- background
-    love.graphics.draw(background, 0, 0, 0, 900 / background:getWidth(), 600 / background:getHeight())
+    -- background (scale to actual window size)
+    local sx = love.graphics.getWidth()  / background:getWidth()
+    local sy = love.graphics.getHeight() / background:getHeight()
+    love.graphics.draw(background, 0, 0, 0, sx, sy)
 
-    -- ground strip
-    love.graphics.setColor(1, 1, 1)
+    -- ground strip (change color or remove to get rid of the white bar)
+    love.graphics.setColor(0.22, 0.6, 0.18) -- example ground color (green); use {1,1,1} or comment out to remove
     love.graphics.rectangle("fill", 0, levelConfig.groundY, love.graphics.getWidth(), love.graphics.getHeight() - levelConfig.groundY)
+    love.graphics.setColor(1,1,1)
 
     -- crystals
     for _, c in ipairs(crystals) do
