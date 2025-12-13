@@ -17,8 +17,11 @@ function Animation.new(image, frameW, frameH, framesCount, speed)
     self.current = 1
 
     local imgW, imgH = image:getDimensions()
+    local framesPerRow = math.floor(imgW / frameW)
     for i = 0, framesCount - 1 do
-        local quad = love.graphics.newQuad(i * frameW, 0, frameW, frameH, imgW, imgH)
+        local fx = (i % framesPerRow) * frameW
+        local fy = math.floor(i / framesPerRow) * frameH
+        local quad = love.graphics.newQuad(fx, fy, frameW, frameH, imgW, imgH)
         table.insert(self.frames, quad)
     end
 

@@ -47,15 +47,8 @@ function loadLevel(index)
 end
 
 function love.update(dt)
-    -- player
-    player:update(dt)
-
-    -- simple ground collision (level ground)
-    if player.y + 128 >= levelConfig.groundY then
-        player.y = levelConfig.groundY - 128
-        player.vy = 0
-        player.onGround = true
-    end
+    -- player: update with groundY so player resolves grounding before choosing animation
+    player:update(dt, levelConfig.groundY)
 
     -- crystals
     for _, c in ipairs(crystals) do

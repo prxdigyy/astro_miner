@@ -1,6 +1,9 @@
 -- src/player.lua
 local Animation = require("src.animation")
 
+-- Toggle to draw a solid rectangle for debugging (helps isolate sprite vs logic flicker)
+local DEBUG_PLAYER_RECT = false
+
 local Player = {}
 Player.__index = Player
 
@@ -64,7 +67,7 @@ function Player:setLevelGravity(g)
     self.gravity = g
 end
 
-function Player:update(dt)
+function Player:update(dt, groundY)
     -- input
     local left = love.keyboard.isDown("left") or love.keyboard.isDown("a")
     local right = love.keyboard.isDown("right") or love.keyboard.isDown("d")
@@ -91,6 +94,17 @@ function Player:update(dt)
     -- integrate
     self.x = self.x + self.vx * dt
     self.y = self.y + self.vy * dt
+
+    -- ground collision (if groundY provided, snap and set onGround here so animation logic uses correct state)
+    if groundY then
+        if self.y + self.h >= groundY then
+            self.y = groundY - self.h
+            self.vy = 0
+            self.onGround = true
+        else
+            self.onGround = false
+        end
+    end
 
     -- determine desired state (do not commit immediately)
     local desired
@@ -128,10 +142,16 @@ function Player:draw()
     love.graphics.setColor(1, 1, 1, 1)
     local dx = math.floor(self.x + 0.5)
     local dy = math.floor(self.y + 0.5)
-    if self.facingRight then
-        a:draw(dx, dy, self.scale, self.scale, false)
+    if DEBUG_PLAYER_RECT then
+        love.graphics.setColor(1,0,0,1)
+        love.graphics.rectangle("fill", dx, dy, self.w, self.h)
+        love.graphics.setColor(1,1,1,1)
     else
-        a:draw(dx, dy, self.scale, self.scale, true)
+        if self.facingRight then
+            a:draw(dx, dy, self.scale, self.scale, false)
+        else
+            a:draw(dx, dy, self.scale, self.scale, true)
+        end
     end
 end
 
