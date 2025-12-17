@@ -103,7 +103,7 @@ function Player:update(dt, groundY)
 
     -- Modify the ground collision logic to account for the hitbox
     if groundY then
-         if self.y + self.h >= groundY then
+        if self.y + self.h >= groundY then
             self.y = groundY - self.h  -- Snap the *smaller* hitbox to the ground
             self.vy = 0
             self.onGround = true
