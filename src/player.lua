@@ -59,8 +59,8 @@ function Player.new(x, y)
     self.gravity = Player.default.gravity
 
     -- collision box
-    self.w = DRAW_W
-    self.h = DRAW_H
+    self.w = DRAW_W * 0.6
+    self.h = DRAW_H * 0.8
 
     return self
 end
