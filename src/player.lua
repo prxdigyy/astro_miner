@@ -1,7 +1,7 @@
 -- src/player.lua
 local Animation = require("src.animation")
 
--- Toggle to draw a solid rectangle for debugging (helps isolate sprite vs logic flicker)
+-- Toggle to draw a solid rectangle for debugging (helps isolate sprite vs hitbox issues)
 local DEBUG_PLAYER_RECT = false
 
 local Player = {}
